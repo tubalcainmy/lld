@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>The Lead Leak Diagnostic | Tubalcain Ads Enterprise</title>
+<meta name="description" content="Find out how much unqualified leads and window shoppers are costing your solar installation business every month.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">T</span>
+      <span class="brand-name">Tubalcain</span>
+    </div>
+    <div class="topbar-meta">30-in-30 Verified Buyer Programme</div>
+  </div>
+  <div class="progress-track" aria-hidden="true">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</header>
+
+<main id="app" class="app">
+
+  <!-- ============ INTRO ============ -->
+  <section class="screen" id="screen-intro" data-screen="intro">
+    <div class="screen-inner intro-inner">
+      <p class="eyebrow">The Lead Leak Diagnostic</p>
+      <h1 class="intro-headline">How much are unqualified leads<br class="lg-only"> actually costing you<br class="lg-only"> every month?</h1>
+      <p class="intro-sub">Answer 10 quick questions about how leads move through your business right now. We'll show you exactly where the money is leaking — wasted site visits, wasted ad spend, and jobs you never even got a shot at.</p>
+      <button class="btn btn-primary btn-lg" id="startBtn">Start the diagnostic</button>
+      <p class="intro-foot">Takes about 2 minutes · No obligation · Your numbers, your result</p>
+    </div>
+  </section>
+
+  <!-- ============ Q1 CITY ============ -->
+  <section class="screen" id="screen-q1" data-screen="q1" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 1 of 10</p>
+      <h2 class="q-title">Which city do you install solar in?</h2>
+      <div class="options" id="q1-options"></div>
+    </div>
+  </section>
+
+  <!-- ============ Q2 LEAD VOLUME ============ -->
+  <section class="screen" id="screen-q2" data-screen="q2" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 2 of 10</p>
+      <h2 class="q-title">Roughly how many leads or enquiries do you get in a typical month?</h2>
+      <p class="q-help">Include every enquiry — WhatsApp messages, calls, walk-ins, ad leads, referrals. Type your best real number, not a guess band.</p>
+      <div class="input-row">
+        <input type="number" inputmode="numeric" class="text-input" id="q2-input" placeholder="e.g. 22" min="0">
+        <span class="input-suffix">per month</span>
+      </div>
+      <p class="error-text" id="q2-error" hidden></p>
+      <button class="btn btn-primary btn-block" id="q2-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q3 DAILY AD SPEND ============ -->
+  <section class="screen" id="screen-q3" data-screen="q3" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 3 of 10</p>
+      <h2 class="q-title">Roughly how much do you spend on ads for leads in a typical day?</h2>
+      <p class="q-help">If you don't run ads daily, enter your typical spend on the days you do run them.</p>
+      <div class="input-row">
+        <span class="input-prefix">₦</span>
+        <input type="number" inputmode="numeric" class="text-input" id="q3-input" placeholder="e.g. 3000" min="0">
+      </div>
+      <p class="error-text" id="q3-error" hidden></p>
+      <label class="checkbox-row">
+        <input type="checkbox" id="q3-noads">
+        <span>I don't currently run paid ads</span>
+      </label>
+      <button class="btn btn-primary btn-block" id="q3-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q4 SITE VISIT CONVERSION ============ -->
+  <section class="screen" id="screen-q4" data-screen="q4" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 4 of 10</p>
+      <h2 class="q-title">Of the leads you get, roughly how many turn into an actual site visit or quote?</h2>
+      <div class="input-row">
+        <input type="number" inputmode="numeric" class="text-input" id="q4-input" placeholder="e.g. 12" min="0">
+        <span class="input-suffix">per month</span>
+      </div>
+      <p class="error-text" id="q4-error" hidden></p>
+      <button class="btn btn-primary btn-block" id="q4-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q5 CLOSE RATE ============ -->
+  <section class="screen" id="screen-q5" data-screen="q5" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 5 of 10</p>
+      <h2 class="q-title">Of those site visits or quotes, roughly how many turn into a signed job?</h2>
+      <div class="input-row">
+        <input type="number" inputmode="numeric" class="text-input" id="q5-input" placeholder="e.g. 3" min="0">
+        <span class="input-suffix">per month</span>
+      </div>
+      <p class="error-text" id="q5-error" hidden></p>
+      <button class="btn btn-primary btn-block" id="q5-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q6 AVERAGE JOB VALUE ============ -->
+  <section class="screen" id="screen-q6" data-screen="q6" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 6 of 10</p>
+      <h2 class="q-title">What is your average completed installation worth?</h2>
+      <p class="q-help">Your typical invoice total for a completed job, in naira.</p>
+      <div class="input-row">
+        <span class="input-prefix">₦</span>
+        <input type="number" inputmode="numeric" class="text-input" id="q6-input" placeholder="e.g. 2200000" min="0">
+      </div>
+      <p class="error-text" id="q6-error" hidden></p>
+      <button class="btn btn-primary btn-block" id="q6-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q7 WASTED VISIT COST ============ -->
+  <section class="screen" id="screen-q7" data-screen="q7" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 7 of 10</p>
+      <h2 class="q-title">Roughly what does a wasted site visit cost you?</h2>
+      <p class="q-help">Fuel, technician time, your own time — whatever it typically adds up to.</p>
+      <div class="input-row">
+        <span class="input-prefix">₦</span>
+        <input type="number" inputmode="numeric" class="text-input" id="q7-input" placeholder="Not sure? We'll estimate ₦23,000" min="0">
+      </div>
+      <p class="error-text" id="q7-error" hidden></p>
+      <p class="q-note">Not sure? We'll use a typical Nigerian estimate — ₦23,000 — and you can see how it's built.</p>
+      <button class="btn btn-primary btn-block" id="q7-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q8 CAPACITY ============ -->
+  <section class="screen" id="screen-q8" data-screen="q8" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 8 of 10</p>
+      <h2 class="q-title">How many installations do you typically complete in a month?</h2>
+      <div class="input-row">
+        <input type="number" inputmode="numeric" class="text-input" id="q8-input" placeholder="e.g. 6" min="0">
+        <span class="input-suffix">per month</span>
+      </div>
+      <p class="error-text" id="q8-error" hidden></p>
+      <button class="btn btn-primary btn-block" id="q8-next">Continue</button>
+    </div>
+  </section>
+
+  <!-- ============ Q9 PAYMENT OPTIONS ============ -->
+  <section class="screen" id="screen-q9" data-screen="q9" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 9 of 10</p>
+      <h2 class="q-title">Do you currently offer instalment or financing options to customers?</h2>
+      <div class="options" id="q9-options"></div>
+    </div>
+  </section>
+
+  <!-- ============ Q10 CONTACT ============ -->
+  <section class="screen" id="screen-q10" data-screen="q10" hidden>
+    <div class="screen-inner">
+      <p class="q-index">Question 10 of 10</p>
+      <h2 class="q-title">Where should we send your results?</h2>
+      <p class="q-help">Your personalised breakdown is one tap away.</p>
+      <div class="field">
+        <label for="q10-name">First name</label>
+        <input type="text" class="text-input" id="q10-name" placeholder="e.g. Adewale" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="q10-business">Business name</label>
+        <input type="text" class="text-input" id="q10-business" placeholder="e.g. Wale Solar Solutions" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="q10-whatsapp">WhatsApp number</label>
+        <input type="tel" inputmode="numeric" class="text-input" id="q10-whatsapp" placeholder="e.g. 0803 123 4567" autocomplete="tel">
+      </div>
+      <p class="error-text" id="q10-error" hidden>Please fill in all three fields with a valid Nigerian phone number.</p>
+      <button class="btn btn-primary btn-block" id="q10-submit">See my results</button>
+    </div>
+  </section>
+
+  <!-- ============ CALCULATING ============ -->
+  <section class="screen" id="screen-calc" data-screen="calc" hidden>
+    <div class="screen-inner calc-inner">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="calc-line" id="calcLine">Adding up your numbers…</p>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="screen" id="screen-result" data-screen="result" hidden>
+    <div class="screen-inner result-inner">
+
+      <!-- Report header -->
+      <div class="report-head">
+        <div class="report-head-top">
+          <span class="eyebrow" style="margin:0;">Lead Leak Diagnostic Report</span>
+          <span class="report-id" id="report-id">#000000</span>
+        </div>
+        <p class="report-for" id="report-for">Prepared for —</p>
+      </div>
+
+      <!-- Severity -->
+      <div class="severity-block">
+        <div class="severity-badge" id="severity-badge">
+          <span class="severity-dot" id="severity-dot"></span>
+          <span id="severity-label">Analysing…</span>
+        </div>
+        <p class="severity-sub" id="severity-sub"></p>
+      </div>
+
+      <!-- Headline finding -->
+      <h2 class="result-headline" id="result-headline">You're losing approximately <span class="hl" id="result-total">₦0</span> a month to unqualified leads and window shoppers.</h2>
+      <p class="result-sub" id="result-annual">That's roughly ₦0 a year — based on what you told us about your funnel.</p>
+
+      <!-- Funnel visualization -->
+      <div class="section-block">
+        <p class="section-label">Where it's happening — your funnel right now</p>
+        <div class="funnel" id="funnel"></div>
+        <p class="funnel-caption" id="funnel-caption"></p>
+      </div>
+
+      <!-- Diagnosis -->
+      <div class="section-block">
+        <p class="section-label">The diagnosis</p>
+        <div class="diagnosis-card" id="diagnosis-card">
+          <div class="diagnosis-tag" id="diagnosis-tag">Analysing…</div>
+          <p class="diagnosis-text" id="diagnosis-text"></p>
+        </div>
+      </div>
+
+      <!-- Benefits tied to the diagnosis -->
+      <div class="section-block">
+        <p class="section-label">What this fixes for you specifically</p>
+        <ul class="benefits-list" id="benefits-list"></ul>
+      </div>
+
+      <!-- Findings / breakdown -->
+      <div class="section-block">
+        <p class="section-label">The receipts</p>
+        <div class="breakdown-card">
+          <div class="breakdown-row" id="row-visits">
+            <div class="breakdown-label">
+              <span class="dot dot-a"></span>
+              <span>Wasted site visits</span>
+            </div>
+            <div class="breakdown-value" id="val-visits">₦0/mo</div>
+          </div>
+          <p class="breakdown-detail" id="detail-visits"></p>
+
+          <div class="breakdown-row" id="row-ads">
+            <div class="breakdown-label">
+              <span class="dot dot-b"></span>
+              <span>Wasted ad spend</span>
+            </div>
+            <div class="breakdown-value" id="val-ads">₦0/mo</div>
+          </div>
+          <p class="breakdown-detail" id="detail-ads"></p>
+
+          <div class="breakdown-row" id="row-opp">
+            <div class="breakdown-label">
+              <span class="dot dot-c"></span>
+              <span>Missed opportunity</span>
+            </div>
+            <div class="breakdown-value" id="val-opp">₦0/mo</div>
+          </div>
+          <p class="breakdown-detail" id="detail-opp"></p>
+        </div>
+      </div>
+
+      <!-- Comparison chart: loss vs program cost -->
+      <div class="section-block" id="comparison-block">
+        <p class="section-label">What this costs you vs. what fixing it costs</p>
+        <div class="compare-chart">
+          <div class="compare-row">
+            <div class="compare-label">
+              <span>What you're losing</span>
+              <span class="compare-figure compare-figure-loss" id="compare-loss-figure">₦0</span>
+            </div>
+            <div class="compare-track"><div class="compare-bar compare-bar-loss" id="compare-bar-loss"></div></div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-label">
+              <span id="compare-program-name">30-in-30 programme, all-in</span>
+              <span class="compare-figure compare-figure-cost" id="compare-cost-figure">₦0</span>
+            </div>
+            <div class="compare-track"><div class="compare-bar compare-bar-cost" id="compare-bar-cost"></div></div>
+          </div>
+        </div>
+        <p class="compare-caption" id="compare-caption"></p>
+      </div>
+
+      <!-- Verdict / recommendation -->
+      <div class="verdict-block" id="verdict-block">
+        <p class="section-label" style="color:#fff; opacity:0.75;">The recommendation</p>
+        <h3 class="verdict-title" id="verdict-title">Based on this diagnosis, here's what we'd recommend</h3>
+        <p class="verdict-body" id="verdict-body"></p>
+      </div>
+
+      <div class="branch-panel" id="branch-panel">
+        <!-- filled by JS depending on branch A/B/C/D -->
+      </div>
+
+      <p class="disclaimer">This report is generated from the figures you provided, combined with typical industry assumptions stated alongside each estimate. It is a diagnostic tool, not a financial audit or a guarantee of results.</p>
+
+      <button class="btn btn-ghost btn-block" id="restartBtn">Start over</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year"></span> Tubalcain Ads Enterprise · Solar buyer generation for Nigerian installers</p>
+</footer>
+
+<script src="config.js"></script>
+<script src="calculator.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
