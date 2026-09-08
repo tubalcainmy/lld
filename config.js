@@ -1,10 +1,10 @@
 /**
- * TUBALCAIN — LEAD LEAK DIAGNOSTIC
- * Configuration file. Edit values here — never in app.js or index.html.
+ * TUBALCAIN  LEAD LEAK DIAGNOSTIC
+ * Configuration file. Edit values here,  never in app.js or index.html.
  *
  * This mirrors the two-layer config pattern used across Tubalcain's other
  * instances (see the Rebuild Brief and Ghana Market Entry Spec): one file
- * holding every number, string and list that might change, so the rest of
+ * holding every number, string, and list that might change, so the rest of
  * the codebase never needs to be touched for a routine update.
  */
 
@@ -14,9 +14,9 @@ const CONFIG = {
   brandName: "Tubalcain Ads Enterprise",
   offerPageUrl: "https://tubalcainmy.github.io/pay-per-lead/offerv2.html",
 
-  // ---- Founder / consultant identity ----
+  // ---- Founder/consultant identity ----
   // Powers the photo and name shown on the intro, calculating, and result
-  // screens — the "personal consultation" framing. Change the photo path
+  // Screens  the "personal consultation" framing. Change the photo path
   // if a new headshot is ever used; keep it a real photo, not a stock image.
   founder: {
     name: "Mystery",
@@ -30,8 +30,8 @@ const CONFIG = {
   // status: "taken"   -> served city, but territory currently held by another installer, Branch B
   // Cities not in this list fall through to "somewhere else" -> Branch C
   cities: [
-    { id: "lagos-mainland", label: "Lagos — Mainland / Ikeja", status: "open" },
-    { id: "lagos-island",   label: "Lagos — Island / Lekki",   status: "open" },
+    { id: "lagos-mainland", label: "Lagos  Mainland / Ikeja", status: "open" },
+    { id: "lagos-island",   label: "Lagos  Island / Lekki",   status: "open" },
     { id: "abuja",          label: "Abuja",                     status: "open" },
     { id: "port-harcourt",  label: "Port Harcourt",             status: "taken" },
     { id: "benin-city",     label: "Benin City",                status: "open" },
@@ -41,15 +41,15 @@ const CONFIG = {
   ],
 
   // ---- Q2: Monthly lead volume ----
-  // Now a typed field, not a band select — see validation.leadVolume
+  // Now a typed field, not a band select;  see validation.leadVolume
   // (changed from option bands so the report can use the installer's
   // real number rather than a band midpoint)
 
   // ---- Q6: Average job value ----
-  // Now a typed field, not a band select — see validation.jobValue
+  // Now a typed field, not a band select;  see validation.jobValue
 
   // ---- Q8: Monthly install capacity ----
-  // Now a typed field, not a band select — see validation.capacity
+  // Now a typed field, not a band select;  see validation. capacity
   // minCapacityForFullOffer: below this, route to Branch D (soft path)
   minCapacityForFullOffer: 4,
 
@@ -63,7 +63,7 @@ const CONFIG = {
 
   // ---- Input validation ranges ----
   // Every typed numeric field is checked against these bounds before the
-  // user can continue. Bounds are sanity checks, not hard business rules —
+  // user can continue. Bounds are sanity checks, not hard business rules 
   // wide enough to admit any real installer, tight enough to catch fat-finger
   // typos (an extra zero, a decimal in the wrong place) before they reach
   // the calculation and produce a nonsense report.
@@ -78,7 +78,7 @@ const CONFIG = {
   },
 
   // ---- Calculation assumptions ----
-  // Every one of these is shown to the user on the result screen —
+  // Every one of these is shown to the user on the result screen 
   // never presented as a measured fact, always as a stated estimate.
   calc: {
     defaultWastedVisitCost: 23000,       // ₦8,000 fuel + ₦15,000 technician half-day
@@ -94,12 +94,12 @@ const CONFIG = {
   // ---- Webhook ----
   // Set this to the dedicated Make.com webhook for this tool.
   // MUST be a separate webhook/scenario from the homeowner qualifier's
-  // installer-routing webhook — see Section 8 of the build spec.
+  // installer-routing webhook;  see Section 8 of the build spec.
   webhookUrl: "", // e.g. "https://hook.us1.make.com/xxxxxxxxxxxxxxxxxxxxx"
 
   // ---- Calculating-screen messages (cycled while the animation runs) ----
-  // First-person, framed as the founder personally reviewing the numbers —
-  // matches the consultation framing on the intro and result screens.
+  // First-person, framed as the founder personally reviewing the numbers 
+  // Matches the consultation framing on the intro and result screens.
   calculatingMessages: [
     "Reviewing your numbers…",
     "Working out the wasted visits…",
@@ -117,7 +117,7 @@ const CONFIG = {
   // ---- Severity bands ----
   // Tier is determined by how many "average jobs worth" of value is leaking
   // each month (total monthly loss ÷ average job value). Purely a framing
-  // device for the report — never presented as a diagnosis of anything
+  // device for the report,  never presented as a diagnosis of anything
   // beyond what the installer themselves told us.
   severityBands: [
     { id: "minor",    max: 0.5, label: "Minor Leak",    color: "#1E9E5A" },
@@ -128,10 +128,10 @@ const CONFIG = {
 
   // ---- Problem diagnosis thresholds ----
   // Every installer's leak traces back to one of two root problems (or both):
-  // a QUALITY problem (leads arrive but don't convert — price shoppers,
+  // a QUALITY problem (leads arrive but don't convert  price shoppers,
   // window shoppers, people who ask "how much" and vanish) or a VOLUME
   // problem (the funnel converts fine, there just aren't enough leads
-  // entering it). These thresholds decide which the installer has.
+  // entering it). These thresholds decide what the installer has.
   diagnosis: {
     goodVisitRate: 0.5,     // 50%+ of leads becoming a visit/quote is healthy
     goodCloseRate: 0.3,     // 30%+ of visits closing is healthy
