@@ -137,6 +137,9 @@ body{
 
 .checkbox-row{display:flex; align-items:center; gap:10px; font-size:14px; color:var(--grey); margin:4px 0 24px; cursor:pointer;}
 .checkbox-row input{width:18px; height:18px; accent-color:var(--blue);}
+.consent-row{align-items:flex-start; margin:2px 0 18px;}
+.consent-row input{margin-top:2px; flex-shrink:0;}
+.consent-row span{line-height:1.5;}
 
 .error-text{color:var(--negative); font-size:13px; margin:0 0 14px;}
 
@@ -471,6 +474,10 @@ button:focus-visible, input:focus-visible, .option:focus-visible{
         <label for="q10-whatsapp">WhatsApp number</label>
         <input type="tel" inputmode="numeric" class="text-input" id="q10-whatsapp" placeholder="e.g. 0803 123 4567" autocomplete="tel">
       </div>
+      <label class="checkbox-row consent-row">
+        <input type="checkbox" id="q10-consent">
+        <span>Yes, send me updates and offers on WhatsApp from Tubalcain Ads Enterprise. You can opt out any time.</span>
+      </label>
       <p class="error-text" id="q10-error" hidden>Please fill in all three fields with a valid Nigerian phone number.</p>
       <button class="btn btn-primary btn-block" id="q10-submit">See my results</button>
     </div>
@@ -1187,8 +1194,10 @@ const Calculator = {
     const nameInput = el("q10-name");
     const bizInput = el("q10-business");
     const waInput = el("q10-whatsapp");
+    const consentInput = el("q10-consent");
     const errorEl = el("q10-error");
     [nameInput, bizInput, waInput].forEach((i) => (i.value = ""));
+    consentInput.checked = false; // opt-in, unchecked by default — never pre-ticked
     errorEl.hidden = true;
 
     el("q10-submit").onclick = () => {
@@ -1204,6 +1213,7 @@ const Calculator = {
       answers.q10_name = name;
       answers.q10_business = biz;
       answers.q10_whatsapp = wa;
+      answers.q10_consent = consentInput.checked; // marketing/updates opt-in — never required to see the result
 
       runCalculation();
     };
@@ -1574,6 +1584,7 @@ const Calculator = {
       name: answers.q10_name,
       businessName: answers.q10_business,
       whatsapp: answers.q10_whatsapp,
+      marketingConsent: !!answers.q10_consent,
       branch: branch,
       result: {
         wastedVisitsCost: result.visits.monthlyCost,
