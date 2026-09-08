@@ -116,6 +116,8 @@ No other configuration needed — it's a static site.
 
 ## Payload shape sent to the webhook
 
+`marketingConsent` is `true` only if the person explicitly ticked the opt-in checkbox on Q10 — it defaults to unchecked and is never required to see the result. Filter on this field before adding anyone to a follow-up or broadcast list; sending updates to someone who left it unticked defeats the point of asking.
+
 ```json
 {
   "tool": "lead-leak-diagnostic",
@@ -133,6 +135,7 @@ No other configuration needed — it's a static site.
   "name": "Adewale",
   "businessName": "Wale Solar Solutions",
   "whatsapp": "08031234567",
+  "marketingConsent": true,
   "branch": "A",
   "result": {
     "wastedVisitsCost": 207000,

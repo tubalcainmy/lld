@@ -242,8 +242,10 @@
     const nameInput = el("q10-name");
     const bizInput = el("q10-business");
     const waInput = el("q10-whatsapp");
+    const consentInput = el("q10-consent");
     const errorEl = el("q10-error");
     [nameInput, bizInput, waInput].forEach((i) => (i.value = ""));
+    consentInput.checked = false; // opt-in, unchecked by default — never pre-ticked
     errorEl.hidden = true;
 
     el("q10-submit").onclick = () => {
@@ -259,6 +261,7 @@
       answers.q10_name = name;
       answers.q10_business = biz;
       answers.q10_whatsapp = wa;
+      answers.q10_consent = consentInput.checked; // marketing/updates opt-in — never required to see the result
 
       runCalculation();
     };
@@ -629,6 +632,7 @@
       name: answers.q10_name,
       businessName: answers.q10_business,
       whatsapp: answers.q10_whatsapp,
+      marketingConsent: !!answers.q10_consent,
       branch: branch,
       result: {
         wastedVisitsCost: result.visits.monthlyCost,

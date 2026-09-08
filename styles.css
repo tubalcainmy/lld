@@ -121,6 +121,9 @@ body{
 
 .checkbox-row{display:flex; align-items:center; gap:10px; font-size:14px; color:var(--grey); margin:4px 0 24px; cursor:pointer;}
 .checkbox-row input{width:18px; height:18px; accent-color:var(--blue);}
+.consent-row{align-items:flex-start; margin:2px 0 18px;}
+.consent-row input{margin-top:2px; flex-shrink:0;}
+.consent-row span{line-height:1.5;}
 
 .error-text{color:var(--negative); font-size:13px; margin:0 0 14px;}
 
