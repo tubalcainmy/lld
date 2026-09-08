@@ -14,6 +14,17 @@ const CONFIG = {
   brandName: "Tubalcain Ads Enterprise",
   offerPageUrl: "https://tubalcainmy.github.io/pay-per-lead/offerv2.html",
 
+  // ---- Founder / consultant identity ----
+  // Powers the photo and name shown on the intro, calculating, and result
+  // screens — the "personal consultation" framing. Change the photo path
+  // if a new headshot is ever used; keep it a real photo, not a stock image.
+  founder: {
+    name: "Mystery",
+    fullName: "Alajayibo Mystery",
+    title: "Founder, Tubalcain Ads Enterprise",
+    photo: "assets/founder.jpg"
+  },
+
   // ---- Q1: Cities ----
   // status: "open"    -> territory available, Branch A eligible
   // status: "taken"   -> served city, but territory currently held by another installer, Branch B
@@ -87,12 +98,14 @@ const CONFIG = {
   webhookUrl: "", // e.g. "https://hook.us1.make.com/xxxxxxxxxxxxxxxxxxxxx"
 
   // ---- Calculating-screen messages (cycled while the animation runs) ----
+  // First-person, framed as the founder personally reviewing the numbers —
+  // matches the consultation framing on the intro and result screens.
   calculatingMessages: [
-    "Adding up your numbers…",
+    "Reviewing your numbers…",
     "Working out the wasted visits…",
     "Checking your ad spend…",
     "Cross-checking your funnel…",
-    "Building your report…"
+    "Writing up your report…"
   ],
 
   // ---- Program cost, for the comparison chart on the result screen ----

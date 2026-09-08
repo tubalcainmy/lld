@@ -36,7 +36,7 @@ body{
 .topbar{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border);}
 .topbar-inner{max-width:640px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:14px 20px 10px;}
 .brand{display:flex; align-items:center; gap:8px;}
-.brand-mark{width:28px; height:28px; border-radius:8px; background:var(--navy); color:#fff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center;}
+.brand-mark{width:28px; height:28px; border-radius:50%; object-fit:contain; display:block; flex-shrink:0;}
 .brand-name{font-weight:700; font-size:15px; color:var(--navy); letter-spacing:0.2px;}
 .topbar-meta{font-size:12px; color:var(--grey); font-weight:600; display:none;}
 @media(min-width:520px){ .topbar-meta{display:block;} }
@@ -54,6 +54,30 @@ body{
 
 /* ===== Intro ===== */
 .intro-inner{padding-top:56px; text-align:left;}
+
+/* ===== Consultant framing ===== */
+.consultant-intro{display:flex; align-items:center; gap:14px; margin-bottom:26px;}
+.consultant-photo{
+  width:56px; height:56px; border-radius:50%; object-fit:cover; flex-shrink:0;
+  border:2px solid var(--border); background:var(--light);
+}
+.consultant-intro-text{min-width:0;}
+.consultant-name{font-size:15px; font-weight:800; color:var(--navy); margin:0 0 3px;}
+.consultant-line{font-size:13.5px; color:var(--grey); margin:0; line-height:1.5;}
+
+.consultant-photo-calc{width:76px; height:76px; margin-bottom:18px; border-width:3px; border-color:var(--light);}
+
+.consultant-byline{display:flex; align-items:center; gap:12px; margin:0 0 22px; padding:14px 16px; background:var(--light); border-radius:var(--radius);}
+.consultant-photo-sm{width:44px; height:44px; border-color:#fff;}
+.consultant-byline-name{font-size:14px; font-weight:800; color:var(--navy); margin:0 0 1px;}
+.consultant-byline-sub{font-size:12px; color:var(--grey); margin:0;}
+
+/* ===== Live-typing effect (diagnosis + verdict text) ===== */
+.type-cursor{
+  display:inline-block; width:2px; height:1em; background:currentColor;
+  margin-left:1px; vertical-align:text-bottom; animation:typeBlink 0.8s step-end infinite;
+}
+@keyframes typeBlink{ 0%,100%{opacity:1;} 50%{opacity:0;} }
 .intro-headline{font-size:30px; line-height:1.22; font-weight:800; color:var(--navy); margin:0 0 18px; letter-spacing:-0.3px;}
 .lg-only{display:none;}
 @media(min-width:600px){ .lg-only{display:inline;} .intro-headline{font-size:38px;} }

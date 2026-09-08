@@ -8,6 +8,36 @@ Built from `Tubalcain-Lead-Leak-Diagnostic-Spec.docx` — read that document for
 
 ---
 
+## Branding — logo and favicons
+
+All brand images are real files under `/assets`, referenced by relative path — nothing is base64-embedded in the page. Embedding images as base64 bloats the HTML file itself (the text has to be sent on every page load, can't be cached separately from the markup, and can't be lazy-loaded), so everything here is a normal linked image file instead, which the browser caches independently and loads in parallel with the rest of the page.
+
+| File | Used for |
+|---|---|
+| `assets/logo-mark.png` | The circular logo in the top bar |
+| `assets/favicon.ico` | Legacy favicon fallback |
+| `assets/favicon-32.png` / `favicon-16.png` | Modern browser tab icons |
+| `assets/apple-touch-icon.png` | Home-screen icon on iOS when someone saves the page |
+
+To swap the logo, replace `logo-mark.png` (keep the same filename) or update the `<img src>` in `index.html`'s topbar. To swap the favicon, replace the four favicon/apple-touch-icon files with new ones at the same sizes (16×16, 32×32, 180×180) — most favicon generator tools will produce a matching set from a single source image.
+
+## Founder / consultation framing
+
+The intro, calculating, and result screens now carry the founder's photo and name, framed as a personal consultation rather than a generic form. Everything is driven from one place:
+
+```js
+founder: {
+  name: "Mystery",
+  fullName: "Alajayibo Mystery",
+  title: "Founder, Tubalcain Ads Enterprise",
+  photo: "assets/founder.jpg"
+}
+```
+
+Change the name or swap the photo by editing this block in `config.js` — nothing else needs touching. The photo file itself lives at `assets/founder.jpg`; replace that file (keep the same filename) to update the image without any code change.
+
+**The result screen's diagnosis and recommendation text now "type" onto the screen** character by character, like the founder is writing it live, rather than appearing all at once. This is built to respect `prefers-reduced-motion` — anyone with that OS setting enabled sees the full text immediately, no animation. The typing speed and behaviour live in the `typeHTML()` function in `app.js` if it ever needs adjusting (2 characters per 14ms tick by default).
+
 ## Files
 
 | File | Purpose |

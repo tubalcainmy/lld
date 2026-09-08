@@ -290,6 +290,51 @@
     }, 2200);
   }
 
+  // ---------- Live-typing effect ----------
+  // Reveals HTML content character-by-character, but consumes any HTML tag
+  // atomically (never freezes mid-tag) — used for the diagnosis and verdict
+  // text so the report feels hand-written in real time rather than dumped
+  // on screen instantly. Respects prefers-reduced-motion.
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function typeHTML(target, html, opts) {
+    opts = opts || {};
+    if (prefersReducedMotion()) {
+      target.innerHTML = html;
+      if (opts.onDone) opts.onDone();
+      return;
+    }
+    const charsPerTick = opts.charsPerTick || 2;
+    const tickMs = opts.tickMs || 14;
+    target.innerHTML = "";
+    let i = 0;
+    const len = html.length;
+
+    function tick() {
+      let budget = charsPerTick;
+      while (budget > 0 && i < len) {
+        if (html[i] === "<") {
+          const close = html.indexOf(">", i);
+          if (close === -1) { i = len; break; }
+          i = close + 1; // whole tag consumed instantly — never split a tag mid-reveal
+        } else {
+          i++;
+          budget--;
+        }
+      }
+      target.innerHTML = html.slice(0, i) + '<span class="type-cursor"></span>';
+      if (i < len) {
+        setTimeout(tick, tickMs);
+      } else {
+        target.innerHTML = html; // drop the cursor once done
+        if (opts.onDone) opts.onDone();
+      }
+    }
+    tick();
+  }
+
   // ---------- Result rendering ----------
   function renderResult(result, branch) {
     const fmt = Calculator.formatNaira;
@@ -343,6 +388,8 @@
     const biz = answers.q10_business || "Your business";
     const name = answers.q10_name ? `, ${answers.q10_name}` : "";
     el("report-for").textContent = `Prepared for ${biz}${name} — ${cityLabel}`;
+    el("bylineName").textContent = `Your diagnosis, from ${CONFIG.founder.name}`;
+    el("bylineSub").textContent = CONFIG.founder.title;
 
     // Deterministic-looking report ID from the WhatsApp number + date, not random —
     // purely cosmetic, gives the report a "generated document" feel.
@@ -420,24 +467,27 @@
     const tag = el("diagnosis-tag");
     const text = el("diagnosis-text");
     tag.className = "diagnosis-tag";
+    let html;
 
     if (diag.type === "quality") {
       tag.classList.add("tag-quality");
       tag.textContent = "Lead Quality Problem";
-      text.innerHTML = `Based on the numbers you gave us, your business has a <strong>lead quality problem</strong>. You're getting enquiries — but only <strong>${diag.visitRatePct}%</strong> ever turn into a real conversation, and of those, only <strong>${diag.closeRatePct}%</strong> close. That pattern usually means most of what's reaching you are price shoppers — people who message "how much is a 5kVA inverter" and disappear the moment they hear a number. This is exactly the problem the 30-in-30 programme was built to solve: every buyer we send has already confirmed their budget bracket, timeline, and payment method before your phone ever rings.`;
+      html = `Based on the numbers you gave us, your business has a <strong>lead quality problem</strong>. You're getting enquiries — but only <strong>${diag.visitRatePct}%</strong> ever turn into a real conversation, and of those, only <strong>${diag.closeRatePct}%</strong> close. That pattern usually means most of what's reaching you are price shoppers — people who message "how much is a 5kVA inverter" and disappear the moment they hear a number. This is exactly the problem the 30-in-30 programme was built to solve: every buyer we send has already confirmed their budget bracket, timeline, and payment method before your phone ever rings.`;
     } else if (diag.type === "volume") {
       tag.classList.add("tag-volume");
       tag.textContent = "Lead Volume Problem";
-      text.innerHTML = `Based on the numbers you gave us, your business has a <strong>lead volume problem</strong>, not a quality one. When leads do reach you, your funnel actually converts well — <strong>${diag.visitRatePct}%</strong> become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The issue is there simply aren't enough people reaching you in the first place — <strong>${diag.leads} leads a month</strong> is well below what a business with your close rate should be working with. This is exactly the problem the 30-in-30 programme was built to solve: a guaranteed 30 verified buyers in 30 days, so your pipeline stops depending on however many people happen to find you.`;
+      html = `Based on the numbers you gave us, your business has a <strong>lead volume problem</strong>, not a quality one. When leads do reach you, your funnel actually converts well — <strong>${diag.visitRatePct}%</strong> become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The issue is there simply aren't enough people reaching you in the first place — <strong>${diag.leads} leads a month</strong> is well below what a business with your close rate should be working with. This is exactly the problem the 30-in-30 programme was built to solve: a guaranteed 30 verified buyers in 30 days, so your pipeline stops depending on however many people happen to find you.`;
     } else if (diag.type === "mixed") {
       tag.classList.add("tag-mixed");
       tag.textContent = "Lead Quality & Volume Problem";
-      text.innerHTML = `Based on the numbers you gave us, your business has <strong>both a volume problem and a quality problem</strong> — the harder combination. You're only getting <strong>${diag.leads} leads a month</strong>, and of those, only <strong>${diag.visitRatePct}%</strong> turn into a real conversation. That's a double leak: too few people reaching you, and most of the ones who do are price shoppers rather than real buyers. This is exactly the combination the 30-in-30 programme was built to solve — guaranteed volume, filtered before it ever reaches your WhatsApp.`;
+      html = `Based on the numbers you gave us, your business has <strong>both a volume problem and a quality problem</strong> — the harder combination. You're only getting <strong>${diag.leads} leads a month</strong>, and of those, only <strong>${diag.visitRatePct}%</strong> turn into a real conversation. That's a double leak: too few people reaching you, and most of the ones who do are price shoppers rather than real buyers. This is exactly the combination the 30-in-30 programme was built to solve — guaranteed volume, filtered before it ever reaches your WhatsApp.`;
     } else {
       tag.classList.add("tag-healthy");
       tag.textContent = "Funnel Running Well";
-      text.innerHTML = `Based on the numbers you gave us, your funnel is actually in decent shape — <strong>${diag.visitRatePct}%</strong> of leads become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The leak we found below is smaller than what most installers are losing, but it's still real money, and it typically comes from the last few unqualified leads slipping through rather than a structural problem.`;
+      html = `Based on the numbers you gave us, your funnel is actually in decent shape — <strong>${diag.visitRatePct}%</strong> of leads become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The leak we found below is smaller than what most installers are losing, but it's still real money, and it typically comes from the last few unqualified leads slipping through rather than a structural problem.`;
     }
+
+    typeHTML(text, html);
   }
 
   // ---------- Benefits tied to diagnosis ----------
@@ -508,19 +558,22 @@
 
     const closingLine = `This is costing you <strong>${fmt(result.total)} every month</strong> right now — and as ad costs and competition for the same buyers both continue to rise, that number is more likely to grow than shrink. If fixing this is a priority for your business, exploring ${CONFIG.programName} is the right next step.`;
 
+    let html;
     if (branch === "A") {
       title.textContent = `We'd recommend ${CONFIG.programName}`;
-      body.innerHTML = `Your biggest leak is ${result.visits.monthlyCost >= result.opp.monthlyCost ? "wasted site visits" : "leads that never even reach a quote"} — and both come from the same root cause: leads reaching you before they've been filtered. The 30-in-30 programme replaces that with buyers who've already confirmed property ownership, a real timeline, a package bracket, and how they intend to pay. At your numbers, that's roughly <strong>${wastedVisits} visit${wastedVisits === 1 ? "" : "s"} a month</strong> that would go from a guess to a real conversation.<br><br>${closingLine}`;
+      html = `Your biggest leak is ${result.visits.monthlyCost >= result.opp.monthlyCost ? "wasted site visits" : "leads that never even reach a quote"} — and both come from the same root cause: leads reaching you before they've been filtered. The 30-in-30 programme replaces that with buyers who've already confirmed property ownership, a real timeline, a package bracket, and how they intend to pay. At your numbers, that's roughly <strong>${wastedVisits} visit${wastedVisits === 1 ? "" : "s"} a month</strong> that would go from a guess to a real conversation.<br><br>${closingLine}`;
     } else if (branch === "B") {
       title.textContent = `${cityLabel} is the right fit — the timing isn't, yet`;
-      body.innerHTML = `Everything in this report points to the same fix — a qualified pipeline instead of a filtered-later one. ${cityLabel} is being served by another installer under an exclusive arrangement right now, so the honest recommendation is to get on the list and be first in line the moment that changes.<br><br>${closingLine}`;
+      html = `Everything in this report points to the same fix — a qualified pipeline instead of a filtered-later one. ${cityLabel} is being served by another installer under an exclusive arrangement right now, so the honest recommendation is to get on the list and be first in line the moment that changes.<br><br>${closingLine}`;
     } else if (branch === "C") {
       title.textContent = `The fix is proven — it's just not in your city yet`;
-      body.innerHTML = `The leak this report found is the exact problem the 30-in-30 programme was built to close, and it's already running in several Nigerian cities. We're not live in yours yet — leave your details and you'll be first to know when that changes.<br><br>${closingLine}`;
+      html = `The leak this report found is the exact problem the 30-in-30 programme was built to close, and it's already running in several Nigerian cities. We're not live in yours yet — leave your details and you'll be first to know when that changes.<br><br>${closingLine}`;
     } else {
       title.textContent = `Not the 30-in-30 programme — not yet`;
-      body.innerHTML = `The leak is real, but at your current capacity, 30 verified buyers a month would likely outpace what your team can install. The honest recommendation is to close the gaps this report found first — starting with whichever bucket above is largest — before adding volume on top of it.<br><br>This is costing you <strong>${fmt(result.total)} every month</strong> — worth fixing regardless of programme timing. Once your capacity grows, ${CONFIG.programName} will be there.`;
+      html = `The leak is real, but at your current capacity, 30 verified buyers a month would likely outpace what your team can install. The honest recommendation is to close the gaps this report found first — starting with whichever bucket above is largest — before adding volume on top of it.<br><br>This is costing you <strong>${fmt(result.total)} every month</strong> — worth fixing regardless of programme timing. Once your capacity grows, ${CONFIG.programName} will be there.`;
     }
+
+    typeHTML(body, html);
   }
 
   function renderBranchPanel(branch, result) {
@@ -610,10 +663,23 @@
     el("startBtn").addEventListener("click", () => { goTo("q1"); });
     el("restartBtn").addEventListener("click", restart);
 
+    applyFounderIdentity();
     initQ1(); initQ2(); initQ3(); initQ4(); initQ5();
     initQ6(); initQ7(); initQ8(); initQ9(); initQ10();
 
     goTo("intro");
+  }
+
+  // Wires CONFIG.founder into every photo/name placeholder on the page —
+  // change the name or photo path in one place (config.js) and it updates
+  // on the intro, calculating, and result screens together.
+  function applyFounderIdentity() {
+    const f = CONFIG.founder;
+    document.querySelectorAll('img.consultant-photo').forEach((img) => {
+      img.src = f.photo;
+      img.alt = "Photo of " + f.fullName;
+    });
+    if (el("introName")) el("introName").textContent = `Hi, I'm ${f.name}.`;
   }
 
   document.addEventListener("DOMContentLoaded", init);
