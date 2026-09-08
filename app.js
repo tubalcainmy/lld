@@ -310,7 +310,7 @@
       return;
     }
     const charsPerTick = opts.charsPerTick || 2;
-    const tickMs = opts.tickMs || 14;
+    const tickMs = opts.tickMs || 30;
     target.innerHTML = "";
     let i = 0;
     const len = html.length;
@@ -358,7 +358,7 @@
     el("val-visits").textContent = fmt(result.visits.monthlyCost) + "/mo";
     el("detail-visits").textContent = result.visits.wastedCount > 0
       ? `${Math.round(result.visits.wastedCount)} visit${result.visits.wastedCount === 1 ? "" : "s"} that didn't close, at ${fmt(result.visits.costPerVisit)} each${result.visits.usedDefault ? " (typical estimate)" : ""}.`
-      : "No wasted visits based on what you told us  good sign.";
+      : "No wasted visits based on what you told us;  good sign.";
 
     // Wasted ad spend
     const adsRow = el("row-ads");
