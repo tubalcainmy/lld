@@ -1,5 +1,5 @@
 /**
- * TUBALCAIN — LEAD LEAK DIAGNOSTIC
+ * TUBALCAIN  LEAD LEAK DIAGNOSTIC
  * App controller. Handles screen flow, rendering options from CONFIG,
  * validation, calculation trigger, and result rendering.
  */
@@ -102,7 +102,7 @@
       }
       const val = Number(raw);
       if (!Number.isFinite(val) || /[^0-9.]/.test(raw)) {
-        showError("Numbers only, please — no letters or symbols.");
+        showError("Numbers only, please  no letters or symbols.");
         return { valid: false };
       }
       if (val < rules.min) {
@@ -110,7 +110,7 @@
         return { valid: false };
       }
       if (val > rules.max) {
-        showError(`That seems too high — check the number and try again.`);
+        showError(`That seems too high  check the number and try again.`);
         return { valid: false };
       }
       const ceiling = opts.getCeiling ? opts.getCeiling() : null;
@@ -183,7 +183,7 @@
       }
       const val = Number(raw);
       if (val < rules.min || val > rules.max) {
-        error.textContent = "That seems too high — check the number and try again.";
+        error.textContent = "That seems too high. Check the number and try again.";
         error.hidden = false; input.classList.add("input-error"); input.focus();
         return;
       }
@@ -215,7 +215,7 @@
     bindNumberField({ inputId: "q6-input", errorId: "q6-error", btnId: "q6-next", rule: "jobValue", answerKey: "q6" });
   }
 
-  // ---------- Q7: Wasted visit cost (optional — defaults if left blank) ----------
+  // ---------- Q7: Wasted visit cost (optional  defaults if left blank) ----------
   function initQ7() {
     bindNumberField({
       inputId: "q7-input", errorId: "q7-error", btnId: "q7-next", rule: "visitCost", answerKey: "q7",
@@ -245,7 +245,7 @@
     const consentInput = el("q10-consent");
     const errorEl = el("q10-error");
     [nameInput, bizInput, waInput].forEach((i) => (i.value = ""));
-    consentInput.checked = false; // opt-in, unchecked by default — never pre-ticked
+    consentInput.checked = false; // opt-in, unchecked by default  never pre-ticked
     errorEl.hidden = true;
 
     el("q10-submit").onclick = () => {
@@ -261,7 +261,7 @@
       answers.q10_name = name;
       answers.q10_business = biz;
       answers.q10_whatsapp = wa;
-      answers.q10_consent = consentInput.checked; // marketing/updates opt-in — never required to see the result
+      answers.q10_consent = consentInput.checked; // marketing/updates opt-in  never required to see the result
 
       runCalculation();
     };
@@ -295,7 +295,7 @@
 
   // ---------- Live-typing effect ----------
   // Reveals HTML content character-by-character, but consumes any HTML tag
-  // atomically (never freezes mid-tag) — used for the diagnosis and verdict
+  // atomically (never freezes mid-tag)  used for the diagnosis and verdict
   // text so the report feels hand-written in real time rather than dumped
   // on screen instantly. Respects prefers-reduced-motion.
   function prefersReducedMotion() {
@@ -321,7 +321,7 @@
         if (html[i] === "<") {
           const close = html.indexOf(">", i);
           if (close === -1) { i = len; break; }
-          i = close + 1; // whole tag consumed instantly — never split a tag mid-reveal
+          i = close + 1; // whole tag consumed instantly  never split a tag mid-reveal
         } else {
           i++;
           budget--;
@@ -346,7 +346,7 @@
     renderSeverity(result);
 
     el("result-total").textContent = fmt(result.total);
-    el("result-annual").textContent = `That's roughly ${fmt(result.annual)} a year — based on what you told us about your funnel.`;
+    el("result-annual").textContent = `That's roughly ${fmt(result.annual)} a year  based on what you told us about your funnel.`;
 
     renderFunnel(result);
 
@@ -358,7 +358,7 @@
     el("val-visits").textContent = fmt(result.visits.monthlyCost) + "/mo";
     el("detail-visits").textContent = result.visits.wastedCount > 0
       ? `${Math.round(result.visits.wastedCount)} visit${result.visits.wastedCount === 1 ? "" : "s"} that didn't close, at ${fmt(result.visits.costPerVisit)} each${result.visits.usedDefault ? " (typical estimate)" : ""}.`
-      : "No wasted visits based on what you told us — good sign.";
+      : "No wasted visits based on what you told us  good sign.";
 
     // Wasted ad spend
     const adsRow = el("row-ads");
@@ -376,8 +376,8 @@
     // Opportunity cost
     el("val-opp").textContent = fmt(result.opp.monthlyCost) + "/mo";
     el("detail-opp").textContent = result.opp.unreached > 0
-      ? `${Math.round(result.opp.unreached)} leads a month never even reached a quote — conservatively, some were winnable.`
-      : "Nearly all your leads are reaching a quote — the leak is further down the funnel.";
+      ? `${Math.round(result.opp.unreached)} leads a month never even reached a quote  conservatively, some were winnable.`
+      : "Nearly all your leads are reaching a quote  the leak is further down the funnel.";
 
     renderComparison(result, branch);
     renderVerdict(result, branch);
@@ -390,11 +390,11 @@
     const cityLabel = cityObj ? cityObj.label : "your city";
     const biz = answers.q10_business || "Your business";
     const name = answers.q10_name ? `, ${answers.q10_name}` : "";
-    el("report-for").textContent = `Prepared for ${biz}${name} — ${cityLabel}`;
+    el("report-for").textContent = `Prepared for ${biz}${name}  ${cityLabel}`;
     el("bylineName").textContent = `Your diagnosis, from ${CONFIG.founder.name}`;
     el("bylineSub").textContent = CONFIG.founder.title;
 
-    // Deterministic-looking report ID from the WhatsApp number + date, not random —
+    // Deterministic-looking report ID from the WhatsApp number + date, not random 
     // purely cosmetic, gives the report a "generated document" feel.
     const d = new Date();
     const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
@@ -475,19 +475,19 @@
     if (diag.type === "quality") {
       tag.classList.add("tag-quality");
       tag.textContent = "Lead Quality Problem";
-      html = `Based on the numbers you gave us, your business has a <strong>lead quality problem</strong>. You're getting enquiries — but only <strong>${diag.visitRatePct}%</strong> ever turn into a real conversation, and of those, only <strong>${diag.closeRatePct}%</strong> close. That pattern usually means most of what's reaching you are price shoppers — people who message "how much is a 5kVA inverter" and disappear the moment they hear a number. This is exactly the problem the 30-in-30 programme was built to solve: every buyer we send has already confirmed their budget bracket, timeline, and payment method before your phone ever rings.`;
+      html = `Based on the numbers you gave us, your business has a <strong>lead quality problem</strong>. You're getting enquiries  but only <strong>${diag.visitRatePct}%</strong> ever turn into a real conversation, and of those, only <strong>${diag.closeRatePct}%</strong> close. That pattern usually means most of what's reaching you are price-shopping  people who message "how much is a 5kVA inverter" and disappear the moment they hear a number. This is exactly the problem the 30-in-30 programme was built to solve: every buyer we send has already confirmed their budget bracket, timeline, and payment method before your phone ever rings.`;
     } else if (diag.type === "volume") {
       tag.classList.add("tag-volume");
       tag.textContent = "Lead Volume Problem";
-      html = `Based on the numbers you gave us, your business has a <strong>lead volume problem</strong>, not a quality one. When leads do reach you, your funnel actually converts well — <strong>${diag.visitRatePct}%</strong> become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The issue is there simply aren't enough people reaching you in the first place — <strong>${diag.leads} leads a month</strong> is well below what a business with your close rate should be working with. This is exactly the problem the 30-in-30 programme was built to solve: a guaranteed 30 verified buyers in 30 days, so your pipeline stops depending on however many people happen to find you.`;
+      html = `Based on the numbers you gave us, your business has a <strong>lead volume problem</strong>, not a quality one. When leads do reach you, your funnel actually converts well:  <strong>${diag.visitRatePct}%</strong> become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The issue is there simply aren't enough people reaching you in the first place:  <strong>${diag.leads} leads a month</strong> is well below what a business with your close rate should be working with. This is exactly the problem the 30-in-30 programme was built to solve: a guaranteed 30 verified buyers in 30 days, so your pipeline stops depending on however many people happen to find you.`;
     } else if (diag.type === "mixed") {
       tag.classList.add("tag-mixed");
       tag.textContent = "Lead Quality & Volume Problem";
-      html = `Based on the numbers you gave us, your business has <strong>both a volume problem and a quality problem</strong> — the harder combination. You're only getting <strong>${diag.leads} leads a month</strong>, and of those, only <strong>${diag.visitRatePct}%</strong> turn into a real conversation. That's a double leak: too few people reaching you, and most of the ones who do are price shoppers rather than real buyers. This is exactly the combination the 30-in-30 programme was built to solve — guaranteed volume, filtered before it ever reaches your WhatsApp.`;
+      html = `Based on the numbers you gave us, your business has <strong>both a volume problem and a quality problem</strong>,  the harder combination. You're only getting <strong>${diag.leads} leads a month</strong>, and of those, only <strong>${diag.visitRatePct}%</strong> turn into a real conversation. That's a double leak: too few people reaching you, and most of the ones who do are price shoppers rather than real buyers. This is exactly the combination the 30-in-30 programme was built to solve:  guaranteed volume, filtered before it ever reaches your WhatsApp.`;
     } else {
       tag.classList.add("tag-healthy");
       tag.textContent = "Funnel Running Well";
-      html = `Based on the numbers you gave us, your funnel is actually in decent shape — <strong>${diag.visitRatePct}%</strong> of leads become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The leak we found below is smaller than what most installers are losing, but it's still real money, and it typically comes from the last few unqualified leads slipping through rather than a structural problem.`;
+      html = `Based on the numbers you gave us, your funnel is actually in decent shape  <strong>${diag.visitRatePct}%</strong> of leads become real conversations and <strong>${diag.closeRatePct}%</strong> of those close. The leak we found below is smaller than what most installers are losing, but it's still real money, and it typically comes from the last few unqualified leads slipping through rather than a structural problem.`;
     }
 
     typeHTML(text, html);
@@ -499,15 +499,15 @@
     list.innerHTML = "";
 
     const qualityBenefits = [
-      "Every buyer has already confirmed a ₦1.5M+ package bracket — no more \"how much\" DMs that go nowhere",
-      "Every buyer has confirmed a real install timeline — no more \"just looking\" conversations",
+      "Every buyer has already confirmed a ₦1.5M+ package bracket  no more \"how much\" DMs that go nowhere",
+      "Every buyer has confirmed a real install timeline;  no more \"just looking\" conversations",
       "Every buyer has stated how they intend to pay before you ever reply",
-      "You only pay after a buyer lands in your WhatsApp — no risk on unqualified volume"
+      "You only pay after a buyer lands in your WhatsApp,  no risk on unqualified volume"
     ];
     const volumeBenefits = [
-      "30 verified buyers guaranteed in 30 days — a predictable pipeline instead of feast-or-famine",
-      "If we miss 30, we fund month two ourselves — the volume risk is ours, not yours",
-      "One installer per city — the buyers we send aren't split with a competitor",
+      "30 verified buyers guaranteed in 30 days:  a predictable pipeline instead of feast-or-famine",
+      "If we miss 30, we fund month two ourselves;  the volume risk is ours, not yours",
+      "One installer per city;  the buyers we send aren't split with a competitor",
       "You set the pace by how fast you call, not by how many people happen to find you"
     ];
 
@@ -544,9 +544,9 @@
 
     if (loss > cost) {
       const multiple = Math.round((loss / cost) * 10) / 10;
-      el("compare-caption").textContent = `What you're losing every month is running about ${multiple}× what the programme costs, all in. Most of that loss repeats — next month, and the month after.`;
+      el("compare-caption").textContent = `What you're losing every month is running about ${multiple}× what the programme costs, all in. Most of that loss repeats  next month, and the month after.`;
     } else {
-      el("compare-caption").textContent = `Your current leak is smaller than the programme's all-in cost — worth fixing the funnel steps above first, or starting at a lower volume.`;
+      el("compare-caption").textContent = `Your current leak is smaller than the programme's all-in cost  worth fixing the funnel steps above first, or starting at a lower volume.`;
     }
   }
 
@@ -559,21 +559,21 @@
     const cityObj = CONFIG.cities.find((c) => c.id === answers.q1);
     const cityLabel = cityObj ? cityObj.label : "your area";
 
-    const closingLine = `This is costing you <strong>${fmt(result.total)} every month</strong> right now — and as ad costs and competition for the same buyers both continue to rise, that number is more likely to grow than shrink. If fixing this is a priority for your business, exploring ${CONFIG.programName} is the right next step.`;
+    const closingLine = `This is costing you <strong>${fmt(result.total)} every month</strong> right now,  and as ad costs and competition for the same buyers both continue to rise, that number is more likely to grow than shrink. If fixing this is a priority for your business, exploring ${CONFIG.programName} is the right next step.`;
 
     let html;
     if (branch === "A") {
       title.textContent = `We'd recommend ${CONFIG.programName}`;
-      html = `Your biggest leak is ${result.visits.monthlyCost >= result.opp.monthlyCost ? "wasted site visits" : "leads that never even reach a quote"} — and both come from the same root cause: leads reaching you before they've been filtered. The 30-in-30 programme replaces that with buyers who've already confirmed property ownership, a real timeline, a package bracket, and how they intend to pay. At your numbers, that's roughly <strong>${wastedVisits} visit${wastedVisits === 1 ? "" : "s"} a month</strong> that would go from a guess to a real conversation.<br><br>${closingLine}`;
+      html = `Your biggest leak is ${result.visits.monthlyCost >= result.opp.monthlyCost ? "wasted site visits": "leads that never even reach a quote"}  and both come from the same root cause: leads reaching you before they've been filtered. The 30-in-30 programme replaces that with buyers who've already confirmed property ownership, a real timeline, a package bracket, and how they intend to pay. At your numbers, that's roughly <strong>${wastedVisits} visit${wastedVisits === 1 ? "" : "s"} a month</strong> that would go from a guess to a real conversation.<br><br>${closingLine}`;
     } else if (branch === "B") {
-      title.textContent = `${cityLabel} is the right fit — the timing isn't, yet`;
-      html = `Everything in this report points to the same fix — a qualified pipeline instead of a filtered-later one. ${cityLabel} is being served by another installer under an exclusive arrangement right now, so the honest recommendation is to get on the list and be first in line the moment that changes.<br><br>${closingLine}`;
+      title.textContent = `${cityLabel} is the right fit  the timing isn't, yet`;
+      html = `Everything in this report points to the same fix:  a qualified pipeline instead of a filtered-later one. ${cityLabel} is being served by another installer under an exclusive arrangement right now, so the honest recommendation is to get on the list and be first in line the moment that changes.<br><br>${closingLine}`;
     } else if (branch === "C") {
-      title.textContent = `The fix is proven — it's just not in your city yet`;
-      html = `The leak this report found is the exact problem the 30-in-30 programme was built to close, and it's already running in several Nigerian cities. We're not live in yours yet — leave your details and you'll be first to know when that changes.<br><br>${closingLine}`;
+      title.textContent = `The fix is proven  it's just not in your city yet`;
+      html = `The leak this report found is the exact problem the 30-in-30 programme was built to close, and it's already running in several Nigerian cities. We're not live in yours yet;  leave your details, and you'll be first to know when that changes.<br><br>${closingLine}`;
     } else {
-      title.textContent = `Not the 30-in-30 programme — not yet`;
-      html = `The leak is real, but at your current capacity, 30 verified buyers a month would likely outpace what your team can install. The honest recommendation is to close the gaps this report found first — starting with whichever bucket above is largest — before adding volume on top of it.<br><br>This is costing you <strong>${fmt(result.total)} every month</strong> — worth fixing regardless of programme timing. Once your capacity grows, ${CONFIG.programName} will be there.`;
+      title.textContent = `Not the 30-in-30 programme  not yet`;
+      html = `The leak is real, but at your current capacity, 30 verified buyers a month would likely outpace what your team can install. The honest recommendation is to close the gaps this report found first,  starting with whichever bucket above is largest  before adding volume on top of it.<br><br>This is costing you <strong>${fmt(result.total)} every month</strong>  worth fixing regardless of programme timing. Once your capacity grows, ${CONFIG.programName} will be there.`;
     }
 
     typeHTML(body, html);
@@ -588,34 +588,34 @@
     if (branch === "A") {
       panel.innerHTML = `
         <h3>What this could look like instead</h3>
-        <p>Installers on the 30-in-30 programme pay ₦5,000 per verified buyer — someone who has already confirmed property ownership, a real timeline, a package bracket, and how they intend to pay, before you ever pick up the phone.
+        <p>Installers on the 30-in-30 programme pay ₦5,000 per verified buyer  someone who has already confirmed property ownership, a real timeline, a package bracket, and how they intend to pay- before you ever pick up the phone.
         ${wastedVisits > 0 ? `At your numbers, that's the difference between ${wastedVisits} wasted visit${wastedVisits === 1 ? "" : "s"} and ${wastedVisits} visit${wastedVisits === 1 ? "" : "s"} worth taking.` : ""}</p>
         <a class="branch-cta" href="${CONFIG.offerPageUrl}" target="_blank" rel="noopener">See how the 30-in-30 programme works →</a>
       `;
     } else if (branch === "B") {
       panel.innerHTML = `
         <h3>${cityLabel} is currently taken</h3>
-        <p>We only work with one installer per city at a time, and ${cityLabel} is being served right now. Join the list and we'll reach out the moment it opens — or if a slot frees up sooner than expected.</p>
-        <a class="branch-cta" href="https://wa.me/2348029234994?text=${encodeURIComponent("Hi, I'd like to join the waitlist for " + cityLabel + " — I just completed the Lead Leak Diagnostic.")}" target="_blank" rel="noopener">Join the ${cityLabel} waitlist →</a>
+        <p>We only work with one installer per city at a time, and ${cityLabel} is being served right now. Join the list, and we'll reach out the moment it opens  or if a slot frees up sooner than expected.</p>
+        <a class="branch-cta" href="https://wa.me/2348029234994?text=${encodeURIComponent("Hi, I'd like to join the waitlist for " + cityLabel + "  I just completed the Lead Leak Diagnostic.")}" target="_blank" rel="noopener">Join the ${cityLabel} waitlist →</a>
       `;
     } else if (branch === "C") {
       panel.innerHTML = `
         <h3>We're not live in your city yet</h3>
-        <p>But this is exactly the kind of problem the system was built to fix. Leave your details and we'll reach out the moment we expand to you.</p>
-        <a class="branch-cta" href="https://wa.me/2348029234994?text=${encodeURIComponent("Hi, I'd like to be notified when Tubalcain opens in my city — I just completed the Lead Leak Diagnostic.")}" target="_blank" rel="noopener">Notify me when it opens →</a>
+        <p>But this is exactly the kind of problem the system was built to fix. Leave your details, and we'll reach out the moment we expand to you.</p>
+        <a class="branch-cta" href="https://wa.me/2348029234994?text=${encodeURIComponent("Hi, I'd like to be notified when Tubalcain opens in my city.  I just completed the Lead Leak Diagnostic.")}" target="_blank" rel="noopener">Notify me when it opens →</a>
       `;
     } else {
       panel.innerHTML = `
-        <h3>Not quite a fit yet — and that's fine</h3>
-        <p>At your current capacity, 30 verified buyers a month would likely be more than your team can take on right now. Here's where to start instead — practical tips for your size, no pitch attached.</p>
-        <a class="branch-cta" href="https://wa.me/2348029234994?text=${encodeURIComponent("Hi, I just completed the Lead Leak Diagnostic — I'd like tips for a smaller operation.")}" target="_blank" rel="noopener">Talk to us on WhatsApp →</a>
+        <h3>Not quite a fit yet,  and that's fine</h3>
+        <p>At your current capacity, 30 verified buyers a month would likely be more than your team can take on right now. Here's where to start instead:  practical tips for your size, no pitch attached.</p>
+        <a class="branch-cta" href="https://wa.me/2348029234994?text=${encodeURIComponent("Hi, I just completed the Lead Leak Diagnostic.  I'd like tips for a smaller operation.")}" target="_blank" rel="noopener">Talk to us on WhatsApp →</a>
       `;
     }
   }
 
   // ---------- Webhook submission ----------
   function submitToWebhook(answers, result, branch) {
-    if (!CONFIG.webhookUrl) return; // not configured yet — safe no-op
+    if (!CONFIG.webhookUrl) return; // not configured yet  safe no-op
     const payload = {
       tool: "lead-leak-diagnostic",
       submittedAt: new Date().toISOString(),
@@ -648,7 +648,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     }).catch(() => {
-      // Fail silently for the user — do not block their result on network issues.
+      // Fail silently for the user  do not block their result on network issues.
       // Consider logging failed submissions locally if this matters for your ops.
     });
   }
@@ -674,7 +674,7 @@
     goTo("intro");
   }
 
-  // Wires CONFIG.founder into every photo/name placeholder on the page —
+  // Wires CONFIG.founder into every photo/name placeholder on the page 
   // change the name or photo path in one place (config.js) and it updates
   // on the intro, calculating, and result screens together.
   function applyFounderIdentity() {
