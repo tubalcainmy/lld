@@ -95,7 +95,7 @@ const CONFIG = {
   // Set this to the dedicated Make.com webhook for this tool.
   // MUST be a separate webhook/scenario from the homeowner qualifier's
   // installer-routing webhook;  see Section 8 of the build spec.
-  webhookUrl: "", // e.g. "https://hook.us1.make.com/xxxxxxxxxxxxxxxxxxxxx"
+  webhookUrl: "https://hook.eu1.make.com/45ltiptmoe3p0o2igyfgsqs2b7olo549", // e.g. "https://hook.us1.make.com/xxxxxxxxxxxxxxxxxxxxx"
 
   // ---- Calculating-screen messages (cycled while the animation runs) ----
   // First-person, framed as the founder personally reviewing the numbers 
