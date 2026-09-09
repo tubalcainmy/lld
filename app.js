@@ -310,7 +310,7 @@
       return;
     }
     const charsPerTick = opts.charsPerTick || 2;
-    const tickMs = opts.tickMs || 30;
+    const tickMs = opts.tickMs || 40;
     target.innerHTML = "";
     let i = 0;
     const len = html.length;
