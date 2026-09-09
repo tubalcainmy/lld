@@ -1,3 +1,4 @@
+(https://github.com/user-attachments/files/31985049/README.md)
 # Lead Leak Diagnostic
 
 A self-facing ROI diagnostic tool for Tubalcain Ads Enterprise's own client acquisition. Same qualify-and-route pattern as the 9-gate homeowner qualifier, pointed at solar installers: it quantifies what unqualified leads and wasted site visits are costing them every month, then routes qualified installers to the 30-in-30 offer page.
@@ -113,6 +114,25 @@ Same pattern as your other tools (`pay-per-lead`, `8-gate`, `C-code`):
 No other configuration needed — it's a static site.
 
 ---
+
+## Analytics — what fires and when
+
+`analytics.js` wraps GA4 (`gtag`) and the Meta Pixel (`fbq`), both already installed in the `<head>` via Google Tag Manager and the Meta Pixel snippet. Every call is defensive — if either script is blocked by an ad blocker or hasn't finished loading yet, the tracking call fails silently and the diagnostic keeps working normally. It is never allowed to break the user experience.
+
+**Rule that never gets broken:** no event anywhere sends the person's name, business name, or WhatsApp number as an event parameter. Both GA4 and Meta explicitly prohibit sending plaintext PII through these channels — only categorical and numeric business data (city, branch, severity tier, naira values) is ever tracked.
+
+| Moment | GA4 event | Meta Pixel event | Why |
+|---|---|---|---|
+| Taps "Start the diagnostic" | `diagnostic_start` | `StartDiagnostic` (custom) | Top-of-funnel — lets you measure intro-screen click-through separately from completion |
+| Each question screen shown | `diagnostic_step` (`step_name`, `step_number`) | — | GA4 only. Build a funnel report (Explore → Funnel exploration) on these steps to see exactly which question people abandon on. Too granular to send to Meta without diluting its delivery signal. |
+| Contact details validated, before the calculating animation | `generate_lead` (`value`, `currency: NGN`, `branch`, `city`) | `Lead` (`value`, `currency: NGN`) | The real conversion moment — a usable WhatsApp number now exists. This is what your ad account should optimise delivery against. |
+| Result report finishes rendering | `view_result` (`value`, `branch`, `diagnosis_type`, `severity`) | `ViewContent` | Confirms the person actually saw their number, not just that they submitted the form. |
+| Branch-panel CTA clicked | `select_content` (`branch`, `destination_type`) | `InitiateCheckout` (Branch A → offer page) or `Contact` (Branch B/C/D → WhatsApp) | The highest-intent moment. `InitiateCheckout` and `Contact` are Meta's standard events for these two actions specifically, so they plug straight into Meta's existing optimisation and reporting rather than needing a custom conversion set up. |
+| "Start over" tapped | `diagnostic_restart` | — | Minor, GA4 only. |
+
+**In Meta Ads Manager:** once a few real `Lead` events have fired, you can build a Custom Conversion or simply select `Lead` as the optimisation event for this campaign, and use `InitiateCheckout` as a secondary signal for retargeting people who saw their result but didn't click through to the offer page.
+
+**In GA4:** the `diagnostic_step` events are what make funnel analysis possible. Build an Explore → Funnel exploration using `diagnostic_step` filtered by `step_number` 1 through 10, and you'll see the exact drop-off point in the flow — the single most useful report this tracking setup enables.
 
 ## Payload shape sent to the webhook
 
